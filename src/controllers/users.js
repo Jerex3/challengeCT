@@ -1,27 +1,23 @@
 const connection = require('../dbConnection');
 const config = require('../../config')
 const jwt = require('jsonwebtoken');
+const moment = require('moment')
 
-const getUsers = (req, res) => {
-
-}
 
 const createUser = async (req, res) => {
 
-    const {name, email, birthDate, prefLeng, password} = req.body
-
-    console.log(req.body)
-
-
+    const {name, email, birthdate, prefLeng, password} = req.body
 
     const client = await connection.getClient()
 
     client.connect()
 
-    await client.query(`insert into "Esq"."users" values ('${name}', '${email}', '${birthDate}', '${prefLeng}', '${password}' )`)
+    await client.query(`insert into "Esq"."users" values ('${name}', '${email}', '${birthdate}', '${prefLeng}', '${password}' )`)
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
+     
+     client.end()
     
     const token = jwt.sign({email}, config.SECRET,{
         expiresIn:80000
@@ -32,10 +28,6 @@ const createUser = async (req, res) => {
 
     }
       
-
-
-
-
 
 
 const deleteUser = (req, res) => {
@@ -50,15 +42,23 @@ const getUserById = (req, res) => {
 
 } 
 
-const authUser = async (req, res) => {
+const singIn = async (req, res) => {
 
-    const { email } = req.body
+    const { email } = req.body // If im here my email and password are
 
-        const token = jwt.sign({email}, config.SECRET,{
-            expiresIn:80000
-        })
+    const token = jwt.sign({email}, config.SECRET,{ 
+        expiresIn:80000
+    })
 
-    res.status(200).json({token})
+    const client = await connection.getClient()
+
+    client.connect()
+
+    const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
+
+    await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'login', '${email}' )`) // Insert into logHistory
+    
+    res.status(200).json({token}) // Create Token
         
     
 
@@ -67,9 +67,8 @@ const authUser = async (req, res) => {
 
 module.exports = {
     createUser,
-    getUsers,
     deleteUser,
     modifyUser,
     getUserById,
-    authUser
+    singIn
 }
