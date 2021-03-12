@@ -1,15 +1,16 @@
 const Router = require('express')
 
 const controller = require('../controllers/users')
+const authJwt = require('../middleware/authJWT')
 
 const router = Router()
 
-router.get('/' , controller.getUsers);
+router.get('/' , [authJwt.verifyToken], controller.getUsers);
 
-router.get('/:clientId' , controller.getUserById);
+router.get('/:email', [authJwt.verifyToken], controller.getUserById);
 
-router.put('/:updateId' , controller.modifyUser);
+router.put('/:email', [authJwt.verifyToken], controller.modifyUser);
 
-router.delete('/:deleteId' , controller.deleteUser);
+router.delete('/:email', [authJwt.verifyToken], controller.deleteUser);
 
 module.exports = router;

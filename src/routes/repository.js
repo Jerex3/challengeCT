@@ -11,8 +11,8 @@ router.get('/' , [auth.verifyToken],  controller.getReps);
 
 router.get('/:id' , [auth.verifyToken], controller.getRep);
 
-router.delete('/:id', [auth.verifyToken], controller.deleteRep)
+router.delete('/:id', [auth.verifyToken], controller.deleteRep);
 
-router.put('/:id', [auth.verifyToken], controller.modifyRep)
+router.put('/:id', [auth.verifyToken], controller.modifyRep);
 
 module.exports = router;

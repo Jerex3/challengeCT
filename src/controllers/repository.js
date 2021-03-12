@@ -7,7 +7,7 @@ const createUpdateQuery = require('../auxFunctions/createUpdateQuery')
 
 const createRep = async (req, res) => {
 
-    const {proyectName, lenguaje, description} = req.body;
+    const {proyectname, lenguaje, description} = req.body;
 
     const client = await connection.getClient()
 
@@ -82,7 +82,6 @@ const modifyRep = async (req, res) => {
 
     client.connect()
 
-    console.log(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
     await client.query(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
     

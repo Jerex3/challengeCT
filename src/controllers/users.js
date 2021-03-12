@@ -29,7 +29,20 @@ const createUser = async (req, res) => { // Sing up
       
 
 
-const deleteUser = (req, res) => {
+const deleteUser = async (req, res) => {
+
+    const userEmail = req.params.email;
+
+    const client = await connection.getClient()
+
+    client.connect()
+    
+    await client.query(`delete from "Esq"."users" where email = '${userEmail}'`)
+    .catch(e => res.status(409).json({message:'an error occurs'}))
+
+    client.end()
+
+    res.status(200).json({message:'user correctly deleted'})
 
 }
 
@@ -37,12 +50,26 @@ const modifyUser = (req, res) => {
 
 }
 
-const getUserById = (req, res) => {
+const getUserById = async (req, res) => {
+
+    const userEmail = req.params.email;
+
+    const client = await connection.getClient()
+
+    client.connect()
+
+    const Resultset = await client.query(`select * from "Esq"."users" where email = '${userEmail}'`)
+    .catch(e => res.status(409).json({message:'an error occurs'}))
+
+    client.end()
+
+    res.status(200).json({data:Resultset.rows})
+    
 
 } 
 
 
-const singIn = async (req, res) => { // Login
+const signIn = async (req, res) => { // Login
 
     const { email } = req.body // If im here my email and password are
 
@@ -60,7 +87,9 @@ const singIn = async (req, res) => { // Login
     
     res.status(200).json({token}) // Create Token
         
-    
+}
+
+const getUsers = () => {
 
 }
 
@@ -70,5 +99,6 @@ module.exports = {
     deleteUser,
     modifyUser,
     getUserById,
-    singIn
+    singIn,
+    getUsers
 }
