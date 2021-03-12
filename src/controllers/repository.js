@@ -87,6 +87,8 @@ const modifyRep = async (req, res) => {
     await client.query(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
     
+    client.end()
+
     res.status(200).json({message:'Repo correctly modified'})
 
 

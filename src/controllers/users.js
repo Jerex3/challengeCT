@@ -85,6 +85,8 @@ const signIn = async (req, res) => { // Login
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'login', '${email}' )`) // Insert into logHistory
     
+    client.end();
+    
     res.status(200).json({token}) // Create Token
         
 }
