@@ -19,7 +19,7 @@ const createRep = async (req, res) => {
     await client.query(`insert into "Esq"."repositories" values ('${proyectname}', '${lenguaje}', '${nowDate}', '${description}' )`)
     .catch(e => res.status(409).json({message:'An error occurs'}))
 
-    client.end()
+    await client.end()
 
     res.status(200).json({message:'Correctly inserted'})
 
@@ -34,7 +34,7 @@ const getReps = async (req, res) => {
 
     const Resultset = await client.query(`select * from "Esq"."repositories"`)
 
-    client.end()
+    await client.end()
 
     res.json({repositories:Resultset.rows})
 
@@ -50,7 +50,7 @@ const getRep = async (req, res) => {
     const resultSet = await client.query(`select * from "Esq"."repositories" where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
 
-    client.end()
+    await client.end()
 
     res.status(200).json({data:resultSet.rows})
 
@@ -67,7 +67,7 @@ const deleteRep = async (req, res) => {
     await client.query(`delete from "Esq"."repositories" where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
 
-    client.end()
+    await client.end()
 
     res.status(200).json({message:`The repositorie ${repoName} was correctly deleted`})
 }
@@ -87,7 +87,7 @@ const modifyRep = async (req, res) => {
     await client.query(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
     
-    client.end()
+    await client.end()
 
     res.status(200).json({message:'Repo correctly modified'})
 

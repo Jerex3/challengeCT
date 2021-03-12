@@ -17,7 +17,7 @@ const createUser = async (req, res) => { // Sing up
         res.status(409).json({message:'An error occurs'})
      })
 
-     client.end()
+     await client.end()
     
     const token = jwt.sign({email}, config.SECRET,{
         expiresIn:config.EXPIRE_TIME
@@ -40,7 +40,7 @@ const deleteUser = async (req, res) => {
     await client.query(`delete from "Esq"."users" where email = '${userEmail}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
 
-    client.end()
+    await client.end()
 
     res.status(200).json({message:'user correctly deleted'})
 
@@ -61,7 +61,7 @@ const getUserById = async (req, res) => {
     const Resultset = await client.query(`select * from "Esq"."users" where email = '${userEmail}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
 
-    client.end()
+    await client.end()
 
     res.status(200).json({data:Resultset.rows})
     
@@ -85,7 +85,7 @@ const signIn = async (req, res) => { // Login
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'login', '${email}' )`) // Insert into logHistory
     
-    client.end();
+    await client.end();
     
     res.status(200).json({token}) // Create Token
         
