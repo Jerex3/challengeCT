@@ -8,7 +8,7 @@ const createQuery = (modifyObject) => { // recibe an object, and create an updat
     let length = Object.keys(modifyObject).length - 1;
     let it = 0;
 
-    if (length > 1) {
+    if (length > 0) {
 
         for (prop in modifyObject) {
 

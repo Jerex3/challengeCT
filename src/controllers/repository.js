@@ -79,7 +79,8 @@ const modifyRep = async (req, res) => {
     const repoName = req.params.id
 
     const client = await connection.getClient()
-    console.log()
+    
+    console.log(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
 
     client.connect()
 
