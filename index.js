@@ -14,8 +14,8 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json())
 
 app.use('/auth', authRoutes)
-app.use('/repos', repRoutes )
 
+app.use('/repos', repRoutes)
 app.use('/users', usersRoutes)
 
 app.listen(app.get('port'), () => console.log(' Server on '))
