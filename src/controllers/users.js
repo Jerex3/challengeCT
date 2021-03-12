@@ -1,10 +1,10 @@
 const connection = require('../dbConnection');
 const config = require('../../config')
 const jwt = require('jsonwebtoken');
-const moment = require('moment')
+const moment = require('moment');
 
 
-const createUser = async (req, res) => {
+const createUser = async (req, res) => { // Sing up 
 
     const {name, email, birthdate, prefLeng, password} = req.body
 
@@ -16,17 +16,16 @@ const createUser = async (req, res) => {
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
-     
+
      client.end()
     
     const token = jwt.sign({email}, config.SECRET,{
-        expiresIn:80000
+        expiresIn:config.EXPIRE_TIME
     })
 
     res.status(200).json({token})
 
-
-    }
+}
       
 
 
@@ -42,12 +41,13 @@ const getUserById = (req, res) => {
 
 } 
 
-const singIn = async (req, res) => {
+
+const singIn = async (req, res) => { // Login
 
     const { email } = req.body // If im here my email and password are
 
     const token = jwt.sign({email}, config.SECRET,{ 
-        expiresIn:80000
+        expiresIn:config.EXPIRE_TIME
     })
 
     const client = await connection.getClient()

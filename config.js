@@ -6,7 +6,8 @@ const CONFIG = {
     port:5432,
     database:'d7qc82uv5vm06g',
     host:'ec2-3-222-11-129.compute-1.amazonaws.com',
-    SECRET:'Challenge'
+    SECRET:'Challenge',
+    EXPIRE_TIME: 80000
 }
 
 module.exports = CONFIG
