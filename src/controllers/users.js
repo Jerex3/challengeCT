@@ -12,7 +12,7 @@ const createUser = async (req, res) => { // Sing up
 
     client.connect()
 
-    await client.query(`insert into "Esq"."users" values ('${name}', '${email}', '${birthdate}', '${prefLeng}', '${password}' )`)
+    await client.query(`insert into "Esq"."users" values ('${name}', '${email}', '${birthdate}', '${prefLeng ? prefLeng : null}', '${password}' )`)
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
