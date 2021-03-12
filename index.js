@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use('/auth', authRoutes)
 
-app.use('/repos', repRoutes)
+app.use('/rep', repRoutes)
 app.use('/users', usersRoutes)
 
 app.listen(app.get('port'), () => console.log(' Server on '))

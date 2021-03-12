@@ -99,6 +99,6 @@ module.exports = {
     deleteUser,
     modifyUser,
     getUserById,
-    singIn,
+    signIn,
     getUsers
 }

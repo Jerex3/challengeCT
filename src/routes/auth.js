@@ -5,7 +5,7 @@ const authC = require('../middleware/authCredentials')
 
 const router = Router()
 
-router.post('/signIn' , [authC.authCredentials], controller.singIn);
+router.post('/signIn' , [authC.authCredentials], controller.signIn);
 
 router.post('/signUp' , controller.createUser);
 

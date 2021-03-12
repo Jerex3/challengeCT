@@ -13,6 +13,7 @@ const createRep = async (req, res) => {
 
     client.connect()
 
+    console.log('xd')
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
     await client.query(`insert into "Esq"."repositories" values ('${proyectname}', '${lenguaje}', '${nowDate}', '${description}' )`)
