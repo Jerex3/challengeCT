@@ -91,6 +91,7 @@ const signIn = async (req, res) => { // Login
     
     const client = await poolCon.connect()
 
+    const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'login', '${email}' )`) // Insert into logHistory
     
@@ -104,12 +105,15 @@ const logOut = async (req, res) => {
 
     const { email } = req.body
 
-    redisCon.del(email)
-    
+    redisCon.del(email) // delete the value in redis
+
+    const client = await poolCon.connect()
+
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'logout', '${email}' )`) // Insert into logHistory
 
+    client.release()
     res.status(200).json({message:"User logout"})
 
 
