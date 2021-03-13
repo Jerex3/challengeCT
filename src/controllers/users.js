@@ -7,12 +7,12 @@ const redisCon = require('../dbConnection/redis')
 
 const createUser = async (req, res) => { // Sing up 
 
-    const {name, email, birthdate, prefLeng, password} = req.body
+    const {username, email, birthdate, prefLeng, password} = req.body
 
     const client = await poolCon.connect()
 
 
-    await client.query(`insert into "Esq"."users" values ('${name}', '${email}', '${birthdate}', '${prefLeng ? prefLeng : null}', '${password}' )`)
+    await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${prefLeng ? prefLeng : null}', '${password}' )`)
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
@@ -74,7 +74,6 @@ const getUserById = async (req, res) => {
 
     res.status(200).json({data:Resultset.rows})
     
-
 } 
 
 
@@ -92,7 +91,6 @@ const signIn = async (req, res) => { // Login
     
     const client = await poolCon.connect()
 
-    const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'login', '${email}' )`) // Insert into logHistory
     
@@ -105,9 +103,12 @@ const signIn = async (req, res) => { // Login
 const logOut = (req, res) => {
 
     const { email } = req.body
-    console.log('hola')
 
     redisCon.del(email)
+    
+    const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
+
+    await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'logout', '${email}' )`) // Insert into logHistory
 
     res.status(200).json({message:"User logout"})
 
