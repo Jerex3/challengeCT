@@ -5,10 +5,12 @@ const con = require('./src/dbConnection')
 const query2 = `select * from "Esq"."Usuarios";`
 
 const func = async () => {
+    
+    //const cls = await con.getClient()
+   const ab = await con.getClient()
+   console.log(ab)
 
-    const cls = await con.getClient()
-
-    cls.connect()
+   console.log(ab)
 
     cls.query(query2).then((res, err) => {
 

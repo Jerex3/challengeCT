@@ -1,11 +1,9 @@
-const { Client } = require('pg')
+const {Pool} = require('pg')
 const CONFIG = require('../../config')
-
-
 
 const getClient =  async () => {
 
-    const client = new Client({
+    const pool = new Pool({
         user:CONFIG.user,
         password:CONFIG.password,
         port:CONFIG.port,
@@ -16,10 +14,11 @@ const getClient =  async () => {
         }
     })
 
-      return client
-
-    
+     return pool.connect()
+   
 }
+
+
 
 exports.getClient = getClient;
     

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
-const connection = require('../dbConnection')
+const pool = require('../dbConnection/pool')
 const verifyToken = (req, res, next) => {
 
     const token = req.headers['token-access'] // I get the token from the request header
@@ -12,11 +12,11 @@ const verifyToken = (req, res, next) => {
         if(err) res.status(401).json({message:"not authorized"}) // if exists but is expired return 401
         
         else {
-            const client = await  connection.getClient()
-
-            client.connect()
+            const client = await pool.connect()
 
             const resultSet = await client.query(`select 1 from "Esq"."users" where email = '${decoded.email}'`)
+
+            client.release()
 
             if (!resultSet.rowCount) res.status(401).json({message:"not authorized"}) // if is not expired but the email-user decoded dosen't exists return 401
 

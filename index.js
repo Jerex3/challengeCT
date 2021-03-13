@@ -1,4 +1,7 @@
 const express = require('express')
+const CONFIG = require('./config')
+const { Client, Pool } = require('pg')
+
 
 
 

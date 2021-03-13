@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken')
-const connection = require('../dbConnection')
+const poolCon = require('../dbConnection/pool')
 const config = require('../../config')
 
 const authCredentials = async (req, res, next) => {
 
     const {email, password} = req.body
 
-    const client = await connection.getClient()
+    const client = await poolCon.connect()
 
-    client.connect()
-    
     const resultSet = await client.query(`select * from "Esq"."users" Where email = '${email}'`)
 
-    client.end()
+    client.release()
 
 
     if(!resultSet.rows.length) return res.status(404).json({message:'User not found'})
