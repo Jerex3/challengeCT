@@ -100,7 +100,7 @@ const signIn = async (req, res) => { // Login
         
 }
 
-const logOut = (req, res) => {
+const logOut = async (req, res) => {
 
     const { email } = req.body
 
