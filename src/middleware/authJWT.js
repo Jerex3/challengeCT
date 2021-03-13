@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('../../config')
-const pool = require('../dbConnection/pool')
+const pool = require('../dbConnection/pgPool')
+
 const verifyToken = (req, res, next) => {
 
     const token = req.headers['token-access'] // I get the token from the request header
@@ -30,5 +31,5 @@ const verifyToken = (req, res, next) => {
 
 
 module.exports = {
-    verifyToken
+    verify:verifyToken
 }

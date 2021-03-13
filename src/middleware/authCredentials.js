@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const poolCon = require('../dbConnection/pool')
+const poolCon = require('../dbConnection/pgPool')
 const config = require('../../config')
 
 const authCredentials = async (req, res, next) => {
@@ -26,5 +26,5 @@ const authCredentials = async (req, res, next) => {
 }   
 
 module.exports = {
-    authCredentials
+    verify:authCredentials
 }

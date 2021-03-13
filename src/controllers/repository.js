@@ -1,8 +1,6 @@
-
-const connection = require('../dbConnection')
 const moment = require('moment')
 const createUpdateQuery = require('../auxFunctions/createUpdateQuery')
-const poolCon = require('../dbConnection/pool')
+const poolCon = require('../dbConnection/pgPool')
 
 
 const createRep = async (req, res) => {

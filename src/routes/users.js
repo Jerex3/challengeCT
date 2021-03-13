@@ -1,16 +1,16 @@
 const Router = require('express')
 
 const controller = require('../controllers/users')
-const authJwt = require('../middleware/authJWT')
+const auth = require('../middleware')
 
 const router = Router()
 
-router.get('/' , [authJwt.verifyToken], controller.getUsers);
+router.get('/' , [auth.verifyJWT, auth.verifyNotLogout] , controller.getUsers);
 
-router.get('/:email', [authJwt.verifyToken], controller.getUserById);
+router.get('/:email',[auth.verifyJWT, auth.verifyNotLogout], controller.getUserById);
 
-router.put('/:email', [authJwt.verifyToken], controller.modifyUser);
+router.put('/:email', [auth.verifyJWT, auth.verifyNotLogout], controller.modifyUser);
 
-router.delete('/:email', [authJwt.verifyToken], controller.deleteUser);
+router.delete('/:email',[auth.verifyJWT, auth.verifyNotLogout], controller.deleteUser);
 
 module.exports = router;

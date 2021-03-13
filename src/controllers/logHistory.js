@@ -1,4 +1,4 @@
-const poolCon = require('../dbConnection/pool')
+const poolCon = require('../dbConnection/pgPool')
 
 
 

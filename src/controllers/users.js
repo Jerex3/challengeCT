@@ -1,8 +1,9 @@
 const config = require('../../config')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-const poolCon = require('../dbConnection/pool')
+const poolCon = require('../dbConnection/pgPool')
 const modify = require('../auxFunctions/createUpdateQuery')
+const redisCon = require('../dbConnection/redis')
 
 const createUser = async (req, res) => { // Sing up 
 
@@ -85,8 +86,11 @@ const signIn = async (req, res) => { // Login
         expiresIn:config.EXPIRE_TIME
     })
 
+    redisCon.set(email, token.toString(), (err, rep) => {
+        console.log(rep)
+    }) // Inserto el par {email, token} en redis.
+    
     const client = await poolCon.connect()
-
 
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
@@ -96,6 +100,18 @@ const signIn = async (req, res) => { // Login
     
     res.status(200).json({token}) // Create Token
         
+}
+
+const logOut = (req, res) => {
+
+    const { email } = req.body
+    console.log('hola')
+
+    redisCon.del(email)
+
+    res.status(200).json({message:"User logout"})
+
+
 }
 
 const getUsers = async (req, res) => {
@@ -117,5 +133,6 @@ module.exports = {
     modifyUser,
     getUserById,
     signIn,
-    getUsers
+    getUsers,
+    logOut
 }
