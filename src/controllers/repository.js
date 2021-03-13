@@ -68,7 +68,6 @@ const deleteRep = async (req, res) => {
 
 const modifyRep = async (req, res) => {
 
-    const {proyectname, lenguaje, creationDate, description} = req.body
 
     const repoName = req.params.id
 

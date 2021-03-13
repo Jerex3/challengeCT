@@ -1,8 +1,8 @@
-const connection = require('../dbConnection');
 const config = require('../../config')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const poolCon = require('../dbConnection/pool')
+const modify = require('../auxFunctions/createUpdateQuery')
 
 const createUser = async (req, res) => { // Sing up 
 
@@ -44,7 +44,19 @@ const deleteUser = async (req, res) => {
 
 }
 
-const modifyUser = (req, res) => {
+const modifyUser = async (req, res) => {
+
+    const userEmail = req.params.email
+
+    const client = await poolCon.connect()
+    
+    await client.query(`update "Esq"."users" ${modify.createUpdateQuery(req.body)} where email = '${userEmail}'`)
+    .catch(e => res.status(409).json({message:'an error occurs'}))
+    
+    client.release()
+
+    res.status(200).json({message:'user correctly modified'})
+
 
 }
 
@@ -86,8 +98,16 @@ const signIn = async (req, res) => { // Login
         
 }
 
-const getUsers = () => {
+const getUsers = async (req, res) => {
 
+    const client = await poolCon.connect()
+
+    const Resultset = await client.query(`select * from "Esq"."users"`)
+    .catch(e => res.status(409).json({message:'an error occurs'}))
+
+    client.release()
+
+    res.status(200).json({data:Resultset.rows})
 }
 
 
