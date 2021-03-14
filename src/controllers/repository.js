@@ -28,7 +28,7 @@ const getReps = async (req, res) => {
 
     const Resultset = await client.query(`select * from "Esq"."repositories"`)
     
-    res.json({repositories:Resultset.rows})
+    res.json({data:Resultset.rows})
 
     client.release()
 

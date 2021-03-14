@@ -13,6 +13,10 @@ const createUser = async (req, res) => { // Sing up
     const client = await poolCon.connect()
 
     const encryptedPassword = await enc.encrypt(password)
+    
+    const token = jwt.sign({email}, config.SECRET,{
+        expiresIn:config.EXPIRE_TIME
+    })
 
     redisCon.set(email, token.toString(), (err, rep) => {
         console.log(rep)
@@ -26,9 +30,7 @@ const createUser = async (req, res) => { // Sing up
 
     client.release()
     
-    const token = jwt.sign({email}, config.SECRET,{
-        expiresIn:config.EXPIRE_TIME
-    })
+ 
 
     res.status(200).json({token})
 
@@ -56,6 +58,8 @@ const modifyUser = async (req, res) => {
 
     const userEmail = req.params.email
 
+    if(req.body.email) res.status(409).json({message:'an error occurs'});
+
     const client = await poolCon.connect()
 
     let body = req.body
@@ -65,7 +69,7 @@ const modifyUser = async (req, res) => {
     
     await client.query(`update "Esq"."users" ${modify.createUpdateQuery(req.body)} where email = '${userEmail}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
-    
+
     client.release()
 
     res.status(200).json({message:'user correctly modified'})
@@ -115,15 +119,18 @@ const signIn = async (req, res) => { // Login
 
 const logOut = async (req, res) => {
 
-    const { email } = req.body
+    const token = req.headers['token-access']
 
-    redisCon.del(email) // delete the value in redis
+
+    const dec = await jwt.verify(token, config.SECRET)
+
+    redisCon.del(dec.email) // delete the value in redis
 
     const client = await poolCon.connect()
 
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
-    await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'logout', '${email}' )`) // Insert into logHistory
+    await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'logout', '${dec.email}' )`) // Insert into logHistory
 
     client.release()
     res.status(200).json({message:"User logout"})
