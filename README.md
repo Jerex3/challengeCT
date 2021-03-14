@@ -10,7 +10,7 @@ la primera recibe
 ```javascript
 
 {
-  "email":"", "\n"
+  "email":"", 
   "password":""
 }
 ```
