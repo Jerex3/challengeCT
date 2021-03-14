@@ -13,7 +13,7 @@ const createUser = async (req, res) => { // Sing up
     const client = await poolCon.connect()
 
     const encryptedPassword = await enc.encrypt(password)
-    
+
     const token = jwt.sign({email}, config.SECRET,{
         expiresIn:config.EXPIRE_TIME
     })
@@ -121,8 +121,7 @@ const logOut = async (req, res) => {
 
     const token = req.headers['token-access']
 
-
-    const dec = await jwt.verify(token, config.SECRET)
+    const dec = jwt.verify(token, config.SECRET)
 
     redisCon.del(dec.email) // delete the value in redis
 
@@ -131,8 +130,8 @@ const logOut = async (req, res) => {
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
     await client.query(`insert into "Esq"."logHistory" values ('${nowDate}', 'logout', '${dec.email}' )`) // Insert into logHistory
-
     client.release()
+
     res.status(200).json({message:"User logout"})
 
 
