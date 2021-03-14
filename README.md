@@ -35,7 +35,7 @@ las rutas /users y /repos poseen sus respectivos metodos get, get:id, put:id, de
 
 todos estos metodos necesitan que en el header "token-access" llegue un token valido, no expirado y no revocado. Podria haber hecho algo mas lindo y complejo, como que los usuarios guarden roles (user y superUser), si el token que llega es de un usuario con roll user, solo podria modificar, eliminar y visualizar sus datos y sus repositorios (asumiendo tambien, que en repositorio guardara una forgeign key a usuario.) mientras que un superuser podria acceder a todos los metodos sobre todos los datos.
 
-Los metodos put, para comodidad del cliente, solo reciben los campos a modificar.
+Los metodos put, para comodidad del cliente, solo reciben los campos a modificar, en el caso del usuario, no se puede modificar el email (para evitar devolver un nuevo token, y eliminar el viejo valor en redis para agregar el nuevo, se podria hacer facilmente.) 
  
  el post de /repos recibe 
  {
