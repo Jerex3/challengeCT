@@ -1,5 +1,5 @@
 const moment = require('moment')
-const createUpdateQuery = require('../auxFunctions/createUpdateQuery')
+const modify = require('../auxFunctions/createUpdateQuery')
 const poolCon = require('../dbConnection/pgPool')
 
 
@@ -71,10 +71,9 @@ const modifyRep = async (req, res) => {
 
     const client = await poolCon.connect()
     
-    console.log(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
 
 
-    await client.query(`update "Esq"."repositories" ${createUpdateQuery.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
+    await client.query(`update "Esq"."repositories" ${modify.createUpdateQuery(req.body)} where proyectname = '${repoName}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))
     
     client.release()

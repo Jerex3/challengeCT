@@ -2,8 +2,9 @@ const config = require('../../config')
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
 const poolCon = require('../dbConnection/pgPool')
-const modify = require('../auxFunctions/createUpdateQuery')
 const redisCon = require('../dbConnection/redis')
+const modify = require('../auxFunctions/createUpdateQuery')
+const enc = require('../encrypt')
 
 const createUser = async (req, res) => { // Sing up 
 
@@ -11,8 +12,14 @@ const createUser = async (req, res) => { // Sing up
 
     const client = await poolCon.connect()
 
+    const encryptedPassword = await enc.encrypt(password)
 
-    await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${prefLeng ? prefLeng : null}', '${password}' )`)
+    redisCon.set(email, token.toString(), (err, rep) => {
+        console.log(rep)
+    }) // Inserto el par {email, token} en redis.
+
+
+    await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${prefLeng  == undefined || "" ? null : prefLeng}', '${encryptedPassword}' )`)
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
@@ -50,6 +57,11 @@ const modifyUser = async (req, res) => {
     const userEmail = req.params.email
 
     const client = await poolCon.connect()
+
+    let body = req.body
+
+    if(body.password) body.password = await enc.encrypt(body.password) // encrypt the password before the update.
+
     
     await client.query(`update "Esq"."users" ${modify.createUpdateQuery(req.body)} where email = '${userEmail}'`)
     .catch(e => res.status(409).json({message:'an error occurs'}))

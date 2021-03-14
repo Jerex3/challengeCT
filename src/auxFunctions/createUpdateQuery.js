@@ -1,4 +1,3 @@
-const e = require("express");
 
 
 const createQuery = (modifyObject) => { // recibe an object, and create an update query of the keys of the object

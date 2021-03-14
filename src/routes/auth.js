@@ -2,7 +2,7 @@ const Router = require('express')
 
 const controller = require('../controllers/users')
 
-const auth = require('../middleware')
+const auth = require('../auth')
 
 const router = Router()
 
