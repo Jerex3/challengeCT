@@ -9,11 +9,12 @@ La ruta /auth posee las sub-rutas /signIn, /signUp y /logout.
 la primera recibe 
 
 {
-  "email":"", \n
+  "email":"", "\n"
   "password":""
 }
 
 y la segunda
+```javascript
 
 {
   "username":"",
@@ -23,7 +24,8 @@ y la segunda
   "prefleng:"" // este puede ser javascript, java, pascal, c , kotlin, python, o "" (si no recibe nada o recibe "" guardo null) 
   
   }
-  
+  ```
+
   las passwords se guardan encriptadas en la base de datos.
   
 /logout solo recibe el token por medio del header "token-access", y lo revoca (mediante redis).
