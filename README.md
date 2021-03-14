@@ -27,7 +27,7 @@ y la segunda
   }
   ```
 
-  las passwords se guardan encriptadas en la base de datos.
+ las passwords se guardan encriptadas en la base de datos.
   
 /logout solo recibe el token por medio del header "token-access", y lo revoca (mediante redis).
  
@@ -39,6 +39,8 @@ las rutas /users y /repos poseen sus respectivos metodos get, get:id, put:id, de
 todos estos metodos necesitan que en el header "token-access" llegue un token valido, no expirado y no revocado. Podria haber hecho algo mas lindo y complejo, como que los usuarios guarden roles (user y superUser), si el token que llega es de un usuario con roll user, solo podria modificar, eliminar y visualizar sus datos y sus repositorios (asumiendo tambien, que en repositorio guardara una forgeign key a usuario.) mientras que un superuser podria acceder a todos los metodos sobre todos los datos.
 
 Los metodos put, para comodidad del cliente, solo reciben los campos a modificar, en el caso del usuario, no se puede modificar el email (para evitar devolver un nuevo token, y eliminar el viejo valor en redis para agregar el nuevo, se podria hacer facilmente.)  esto ultimo lo pude haber modelado con un trigger en postgres, pero preferi hacerlo en la api por simplicidad.
+
+la ruta /logs solo puede recibir /get, que mostrara el log history. solo se puede eliminar ya que esta se mantiene actualizada, si se elimina un usuario, se eliminan sus logs tambien (delete configurado como cascade). 
  
  el post de /repos recibe 
  ```javascript
