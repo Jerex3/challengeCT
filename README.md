@@ -7,13 +7,15 @@ La ruta /auth posee las sub-rutas /signIn, /signUp y /logout.
 /signIn y /signUp reciben los valores para logearse/registrarse, y si todo salio bien, devuelven un token.
 
 la primera recibe 
+```javascript
 
 {
-  "email":"",
+  "email":"", 
   "password":""
 }
-
+```
 y la segunda
+```javascript
 
 {
   "username":"",
@@ -23,7 +25,8 @@ y la segunda
   "prefleng:"" // este puede ser javascript, java, pascal, c , kotlin, python, o "" (si no recibe nada o recibe "" guardo null) 
   
   }
-  
+  ```
+
   las passwords se guardan encriptadas en la base de datos.
   
 /logout solo recibe el token por medio del header "token-access", y lo revoca (mediante redis).
@@ -38,10 +41,13 @@ todos estos metodos necesitan que en el header "token-access" llegue un token va
 Los metodos put, para comodidad del cliente, solo reciben los campos a modificar, en el caso del usuario, no se puede modificar el email (para evitar devolver un nuevo token, y eliminar el viejo valor en redis para agregar el nuevo, se podria hacer facilmente.)  esto ultimo lo pude haber modelado con un trigger en postgres, pero preferi hacerlo en la api por simplicidad.
  
  el post de /repos recibe 
+ ```javascript
+
  {
     "proyectname":"",
     "lenguaje":"", // Solo uno de los validos
     "description":"" // opcional.
  }
- 
+  ```
+
  eso es todo, Muchas gracias!!.
