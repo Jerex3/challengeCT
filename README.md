@@ -9,7 +9,7 @@ La ruta /auth posee las sub-rutas /signIn, /signUp y /logout.
 la primera recibe 
 
 {
-  "email":"",
+  "email":"", \n
   "password":""
 }
 
