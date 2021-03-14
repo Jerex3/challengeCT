@@ -22,7 +22,7 @@ const createUser = async (req, res) => { // Sing up
         console.log(rep)
     }) // Inserto el par {email, token} en redis.
 
-    await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${(prefLeng  == undefined || "") ? null : prefLeng}', '${encryptedPassword}' )`)
+    await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${(prefleng  == undefined || "") ? null : prefleng}', '${encryptedPassword}' )`)
     .catch(e => {
         res.status(409).json({message:'An error occurs'})
      })
