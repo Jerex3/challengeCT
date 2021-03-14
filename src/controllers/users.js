@@ -8,7 +8,7 @@ const enc = require('../encrypt')
 
 const createUser = async (req, res) => { // Sing up 
 
-    const {username, email, birthdate, prefLeng, password} = req.body
+    const {username, email, birthdate, prefleng, password} = req.body
 
     const client = await poolCon.connect()
 
@@ -21,7 +21,6 @@ const createUser = async (req, res) => { // Sing up
     redisCon.set(email, token.toString(), (err, rep) => {
         console.log(rep)
     }) // Inserto el par {email, token} en redis.
-
 
     await client.query(`insert into "Esq"."users" values ('${username}', '${email}', '${birthdate}', '${(prefLeng  == undefined || "") ? null : prefLeng}', '${encryptedPassword}' )`)
     .catch(e => {
