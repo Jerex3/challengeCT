@@ -11,7 +11,7 @@ const createRep = async (req, res) => {
 
     const nowDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss') // Transform now Date into timestamp
 
-    await client.query(`insert into "Esq"."repositories" values ('${proyectname}', '${lenguaje}', '${nowDate}', '${description}' )`)
+    await client.query(`insert into "Esq"."repositories" values ('${proyectname}', '${lenguaje}', '${nowDate}', '${description ? description : null}' )`)
     .catch(e => res.status(409).json({message:'An error occurs'}))
 
     client.release()
