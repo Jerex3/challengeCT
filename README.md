@@ -52,4 +52,6 @@ la ruta /logs solo puede recibir /get, que mostrara el log history. solo se pued
  }
   ```
 
- eso es todo, Muchas gracias!!.
+La base de datos postgre esta desplegada en el mismo heroku, con heroku-posgres, mientras que redis, con el servicio en la nube de 30mb que ellos ofrecen.
+
+eso es todo, Muchas gracias!!.
